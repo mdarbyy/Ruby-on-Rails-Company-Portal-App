@@ -67,8 +67,8 @@
     }
 
     #nav-sidebar {
-      background-color: #9D1C3F; 
-      color: white; 
+      background-color: #d5c7bc; 
+      color: rgba(183,28,28,255); 
       height: 100vh; 
       left: 0;
       padding-top: 20px;
@@ -78,22 +78,14 @@
       z-index: 9999;
     }
 
-    #nav-sidebar h4 {
-      color: white;
-    }
-
     #nav-sidebar .list-group-item {
-      background-color: #9D1C3F; 
+      background-color: #d5c7bc; 
       border: none;
       padding: 0;
-    }
-
-    #nav-sidebar .list-group-item:hover {
-      background-color: #85192e;
-    }
+    }  
 
     #nav-sidebar .sidebar-nav-link {
-      color: white;
+      color: rgba(183,28,28,255);
       display: block;
       font-size: 16px;
       padding: 15px 20px;
@@ -101,12 +93,12 @@
     }
 
     #nav-sidebar .sidebar-nav-link:hover, .sidebar-nav-link.active {
-      background-color: #85192e;
-      color: white;
+      background-color: rgba(183,28,28,255);
+      color: white !important;
     }
 
     .authenticated {
-      background: #F5F5F5;
+      background: white;
       background-attachment: fixed;
       background-position: center;
       background-repeat: no-repeat;
@@ -123,7 +115,7 @@
     }
 
     .btn-main {
-      background-color: #9D1C3F !important;
+      background-color: rgba(183,28,28,255) !important;
       color: white !important;
     }
 
@@ -131,7 +123,7 @@
     .btn-main:focus,
     .btn-main:active,
     .btn-main.active {
-      background-color: #85192e !important;
+      background-color: #831315 !important;
       color: white !important;
     }
 
@@ -151,7 +143,7 @@
 
     .custom-checkbox .checkmark {
       background-color: transparent; /* Transparent background when not checked */
-      border: 2px solid #9D1C3F; /* Red border */
+      border: 2px solid rgba(183,28,28,255); /* Red border */
       border-radius: 4px;
       cursor: pointer;
       display: inline-block;
@@ -266,7 +258,7 @@
     }
 
     .nav-link:hover {
-      color: #9D1C3F;
+      color: rgba(183,28,28,255);
     }
 
     .search-form {
@@ -305,8 +297,7 @@
           <div class="row mt-5 mb-5">
             <div class="col">
               <h4 class="text-center">
-                <%= link_to home_path do %>
-                <% end %>
+                <%= image_tag 'darby_real_estate_logo.png', style: "width:230px;" %>
               </h4>
             </div>
           </div>
