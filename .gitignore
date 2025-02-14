@@ -32,3 +32,4 @@
 
 #Ignore YML files
 /yml/*
+*.yml
