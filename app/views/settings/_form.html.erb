@@ -1,0 +1,13 @@
+<%= form_with(model: setting, local: true) do |form| %>
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+      <label class="col-form-label"><strong>Number of records returned from a ajax call</strong></label>
+      <%= form.number_field :entity_limit, class: 'form-control', placeholder: setting.entity_limit %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 d-flex justify-content-end">
+      <%= form.submit 'Submit', class: 'btn btn-main', onclick:"show_spinner()" %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,137 @@
+<div class="flex-fill d-flex flex-column m-1">
+
+  <div id="content-header">
+    <div class="row">
+      <div class="col-4 d-flex justify-content-start">
+        <%= button_to 'Add User', new_user_path, method: :get, class: 'btn btn-main btn-left' %>
+      </div>
+      <div class="col-4 d-flex justify-content-center">
+        <h1>Users</h1>
+      </div>
+      <div class="col-4 d-flex justify-content-end">
+        <form role="search" class="d-flex search-form">
+          <input class="form-control" type="text" placeholder="Search" aria-label="Search" id="content-search">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Main -->
+  <div class="card m-1 p-2" id="content-main">
+    <div class="h-100 table-responsive" id="content-scroll">
+
+      <% if @users.present? and @users.count > 0 %>
+        <table class="table content" id="content-table">
+          <thead>
+            <tr>
+              <th class="stick" scope="col"><a>Email</a></th>
+              <th class="stick" scope="col"><a>First Name</a></th>
+              <th class="stick" scope="col"><a>Last Name</a></th>
+            </tr>
+          </thead>
+          <tbody id="content-table-body">
+
+            <% @users.each do |user| %>
+              <%= render 'user', user: user %>
+            <% end %>
+
+          </tbody>
+        </table>
+      <% else %>
+        <table class="table content">
+          <thead>
+            <tr>
+              <th scope="col"><a>Email</a></th>
+              <th scope="col"><a>First Name</a></th>
+              <th scope="col"><a>Last Name</a></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <h1 class="text-center">NO DATA</h1>
+      <% end %>
+      <div id="loading-spinner" style="display: none; text-align: center;">
+        <div class="spinner-border text-danger" role="status">
+          <span class="sr-only"></span>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center;" id="recordCount">
+      <b>Displaying <span id="currentCount">0</span> of <%= @total_records %> users</b>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+  var offset1 = 20;
+  var isLoading1 = false;
+
+  $( document ).ready(function() {
+
+    var rowCount = $('#content-table tbody tr').length;
+    $('#currentCount').text(rowCount);
+
+    $("#content-search").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#content-table-body tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      });
+    });
+
+  });
+
+  $("#content-scroll").scroll(function() {
+    var totalRecords = <%= @total_records %>;
+    var currentCount = parseInt($('#currentCount').text());
+
+    // Check if current count is less than total records before calling loadMoreRecords
+    if (currentCount < totalRecords) {
+      if ($("#content-scroll").scrollTop() >= $("#content-table").height() - $("#content-scroll").height() && !isLoading1) {
+        loadMoreRecords();
+      }
+    }
+  });
+
+  function loadMoreRecords() {
+
+    if (isLoading) return;
+
+    console.log("isLoading1");
+
+    $.ajax({
+      url: "users",
+      data: { offset: offset1 },
+      type: 'GET',
+      dataType: 'script',
+      cache: true,
+      beforeSend: function(){
+        isLoading1 = true;
+        $("#loading-spinner").show();
+      },
+      success: function(data) {
+        offset1 += 20;
+        console.log("loaded");
+        var rowCount = $('#content-table tbody tr').length;
+        $('#currentCount').text(rowCount);
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error("AJAX Error:", textStatus, errorThrown);
+      },
+      complete: function(){
+        isLoading1 = false;
+        $("#loading-spinner").hide();
+      }
+    });
+  }
+
+  function OrderBy(a,b,n) {
+      if (n) return a-b;
+      if (a < b) return -1;
+      if (a > b) return 1;
+      return 0;
+  }
+  
+</script>

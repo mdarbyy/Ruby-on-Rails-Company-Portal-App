@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>App</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Handjet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+
+  <style>
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+      font-family: 'Quicksand';
+    }
+
+    th.stick {
+      background-color: white;
+      cursor: pointer;
+      position: sticky;
+      text-align: center;
+      top: 0; 
+    }
+
+    th, td {
+      text-align: center;
+      width: 100px;
+    }
+
+    #alertContainer {
+      position: fixed;
+      right: 50%;
+      top: 1em;
+      transform: translateX(50%);
+      z-index: 9999;
+    }
+
+    #alertContainerUnauthenticated {
+      text-align: center;
+      position: absolute;
+      top: 150px;
+    }
+
+    #content-main {
+      height: 85vh;
+    }
+
+    #content-search {
+      flex: 1;
+      margin-right: 5px; 
+    }
+
+    #nav-sidebar {
+      background-color: #9D1C3F; 
+      color: white; 
+      height: 100vh; 
+      left: 0;
+      padding-top: 20px;
+      position: fixed;
+      top: 0;
+      width: 250px;
+      z-index: 9999;
+    }
+
+    #nav-sidebar h4 {
+      color: white;
+    }
+
+    #nav-sidebar .list-group-item {
+      background-color: #9D1C3F; 
+      border: none;
+      padding: 0;
+    }
+
+    #nav-sidebar .list-group-item:hover {
+      background-color: #85192e;
+    }
+
+    #nav-sidebar .sidebar-nav-link {
+      color: white;
+      display: block;
+      font-size: 16px;
+      padding: 15px 20px;
+      text-decoration: none;
+    }
+
+    #nav-sidebar .sidebar-nav-link:hover, .sidebar-nav-link.active {
+      background-color: #85192e;
+      color: white;
+    }
+
+    .authenticated {
+      background: #F5F5F5;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .authenticated, .unauthenticated {
+      height: 100%; 
+      overflow: hidden;
+    }
+
+    .brand {
+      font-family: 'Handjet';
+    }
+
+    .btn-main {
+      background-color: #9D1C3F !important;
+      color: white !important;
+    }
+
+    .btn-main:hover,
+    .btn-main:focus,
+    .btn-main:active,
+    .btn-main.active {
+      background-color: #85192e !important;
+      color: white !important;
+    }
+
+    .btn-left {
+      margin-left: 5px;
+      margin-top: 10px;
+    }
+
+    .btn-right {
+      margin-right: 5px; 
+      margin-top: 10px;
+    }
+
+    .custom-checkbox input[type="checkbox"] {
+      display: none;
+    }
+
+    .custom-checkbox .checkmark {
+      background-color: transparent; /* Transparent background when not checked */
+      border: 2px solid #9D1C3F; /* Red border */
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-block;
+      height: 20px;
+      margin-top: 7px;
+      position: relative;
+      width: 20px;
+    }
+
+    .custom-checkbox .checkmark:after {
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      content: "";
+      display: none;
+      height: 10px;
+      left: 6px;
+      position: absolute;
+      top: 2px;
+      transform: rotate(45deg);
+      width: 6px;
+    }
+
+    .custom-checkbox input[type="checkbox"]:checked + .checkmark {
+      background-color: #9D1C3F; /* Use your custom red color */
+    }
+
+    .custom-checkbox input[type="checkbox"]:checked + .checkmark:after {
+      display: block;
+    }
+
+    .custom-textarea {
+      height: 325px;
+      resize: none;
+    }
+
+    .custom-textarea-small {
+      height: 100px;
+      resize: none;
+    }
+
+    .dropdown-item.nav-link:focus,
+    .dropdown-item.nav-link:active,
+    .dropdown-item.nav-link.active {
+      background-color: inherit; /* Keep the background color the same as the original */
+      box-shadow: none; /* Remove any box-shadow that might be applied */
+      color: inherit; /* Keep the text color the same as the original */
+      outline: none; /* Remove the outline */
+    }
+
+    .dropdown-item.nav-link:focus-visible {
+      outline: none; /* Ensure links don't turn blue when focused */
+    }
+
+    .footer-text {
+      color: white;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .form-container {
+      max-width: 450px;
+      width: 100%;
+    }
+
+    .form-container h3 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-label {
+      font-weight: bold;
+    }
+
+    .form-section {
+      align-items: center;
+      background-color: white;
+      display: flex;
+      flex-direction: column; /*stack vertically */
+      flex: 1;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    .image-section {
+      background-image: url('<%= asset_path("sign_in.jpg") %>');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      flex: 3;
+    }
+
+    .list-group-item {
+      border: none;
+      text-align: center;
+    }
+
+    .main-content {
+      flex-grow: 1; 
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-width: none;
+      margin-top: 70px;
+    }
+
+    .main-content::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-link, .nav-link:visited {
+      color: black;
+    }
+
+    .nav-link:hover {
+      color: #9D1C3F;
+    }
+
+    .search-form {
+      height: 40px;
+      margin-top: 5px;
+      max-width: 300px;
+      width: 100%;
+    }
+
+    .unauthenticated {
+      display: flex;
+      height: 100vh;
+    }
+  </style>
+
+  </head>
+
+  <body>
+    <div style="height: 0;">
+      <div id="alertContainer"></div>
+      <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+          <div class="spinner-border text-danger" id="spinner" role="status" style="z-index: 9999; width: 100px; height: 100px;"></div>
+        </div>
+      </div>
+    </div>
+    
+    <% if user_signed_in? %>
+      <div class="d-flex flex-column h-100 authenticated">
+  
+      <div class="container-fluid h-100 d-flex flex-row p-0" id="content">
+        
+        <!-- Navigation Sidebar -->
+        <div class="position-relative" id="nav-sidebar">
+          
+          <div class="row mt-5 mb-5">
+            <div class="col">
+              <h4 class="text-center">
+                <%= link_to home_path do %>
+                <% end %>
+              </h4>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col">
+              <ul class="list-group list-group-flush mt-4">
+                <li class="list-group-item">
+                  <%= link_to "Home", home_path, class: "dashboard-link sidebar-nav-link #{'active' if current_page?(home_path)}" %>
+                </li>
+                <li class="list-group-item">
+                  <%= link_to "Users", users_path, class: "dashboard-link sidebar-nav-link #{'active' if current_page?(users_path)}" %>
+                </li>
+                <li class="list-group-item text-center">
+                  <% if Setting.exists? %>
+                    <%= link_to "Settings", edit_setting_path(Setting.first), class: "dashboard-link sidebar-nav-link #{'active' if current_page?(edit_setting_path(Setting.first))}" %>
+                  <% else %>
+                    <%= link_to "Settings", settings_path, class: "dashboard-link sidebar-nav-link #{'active' if current_page?(settings_path)}" %>
+                  <% end %>
+                </li>
+              </ul>
+            </div>
+          </div>  
+        </div>
+
+        <!-- Main content -->
+        <div class="main-content">
+          <div class="navbar navbar-expand-lg fixed-top" id="nav-header">
+            <div class="container-fluid">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0"> 
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 18px;">
+                      <%= current_user.email %>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"> 
+                      <li>
+                        <%= link_to "Profile", edit_user_path(current_user), class: "dropdown-item nav-link", data: { remote: true } %>
+                      </li>
+                      <li>
+                        <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "dropdown-item nav-link" %>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+
+    <% else %>
+      <div class="unauthenticated">
+        <div class="image-section"></div>
+        <div class="form-section">
+          
+          <div id="alertContainerUnauthenticated"></div>
+          
+          <div class="form-container">
+            <h3>Company Portal</h3>
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </body>
+</html>
+
+<script>
+
+  $(document).ready(function() {
+    hide_spinner();
+    const dashboardLinks = document.querySelectorAll('.dashboard-link');
+
+    dashboardLinks.forEach(link => {
+      link.addEventListener('click', function(event) {
+        event.preventDefault();
+        show_spinner();
+
+        window.location.href = this.href;
+      });
+    });
+
+  });
+
+  function show_spinner(){
+    document.getElementById("overlay").style.display = "block";
+    $('#spinner').show();
+  }
+
+  function hide_spinner(){
+    document.getElementById("overlay").style.display = "none";
+    $('#spinner').hide();
+  }
+
+  var currentAlertIds = {
+    INFO: null,
+    SUCCESS: null,
+    DANGER: null
+  };
+
+  function alertMessage(message, messageType, delayTime = 2500, isJobStatusAlert = false) {
+    
+    console.log(message);
+    
+    var alertTypeKey = messageType.toUpperCase();
+
+    // Update existing alert of the same type if it exists
+    if (currentAlertIds[alertTypeKey]) {
+      $('#' + currentAlertIds[alertTypeKey] + ' .alert-heading').text(message);
+      return;
+    }
+
+    // Clear existing alerts of different types
+    Object.keys(currentAlertIds).forEach(key => {
+      if (currentAlertIds[key] && key !== alertTypeKey) {
+        $('#' + currentAlertIds[key]).remove();
+        currentAlertIds[key] = null;
+      }
+    });
+
+    var iconHTML = '';
+    if ((messageType === "SUCCESS") || 
+      (messageType === "DANGER") || 
+      (messageType === "INFO" && isJobStatusAlert)) {
+      switch (messageType) {
+        case "INFO":
+          iconHTML = '<i class="spinner-border text-primary" style="margin-right: 10px;" role="status"></i>';
+          break;
+        case "SUCCESS":
+          iconHTML = '<i class="bi bi-check-circle-fill text-success" style="margin-right: 10px;"></i>';
+          break;
+        case "DANGER":
+          iconHTML = '<i class="bi bi-x-circle-fill text-danger" style="margin-right: 10px;"></i>';
+          break;
+      }
+    }
+
+    var alertId = "alert-" + uuidv4();
+    
+    if(isJobStatusAlert){
+
+      var alertContainerHTML =
+      '<div class="alert d-flex align-items-center" id="' + alertId + '" role="alert" style="text-align: center; width: 375px; z-index: 1000; margin: 1em;">' +
+      '<span style="margin-right: 5px;">' + iconHTML + '</span>' + 
+      '<h5 class="alert-heading mb-0">' + message + '</h5>' +
+      '</div>';
+    } else {
+      var alertContainerHTML =
+      '<div class="alert" id="' + alertId + '" role="alert" style="text-align: center; width: 375px; z-index: 9999; margin: 1em;">' +
+      '<h5 class="alert-heading">' + message + '</h5>' +
+      '</div>';
+    }
+    
+    <% if user_signed_in? %>
+      $('#alertContainer').append(alertContainerHTML);
+    <% else %>
+
+      console.log(alertContainerHTML);
+
+      $('#alertContainerUnauthenticated').append(alertContainerHTML);
+    <% end %>
+    
+    // Assign the alert type classes based on messageType
+    var $alert = $('#' + alertId);
+    if (messageType === "SUCCESS") {
+      $alert.addClass("alert-success");
+    } else if (messageType === "DANGER") {
+      $alert.addClass("alert-danger");
+    } else if (messageType === "INFO") {
+      $alert.addClass("alert-info");
+    }
+
+    <% if user_signed_in? %>
+      $("#alertContainer").show();
+    <% else %>
+      $('#alertContainerUnauthenticated').show();
+    <% end %>
+
+    // Auto-dismiss logic
+    if (messageType !== "INFO" || !isJobStatusAlert) {
+      $alert.delay(delayTime).fadeOut(250, function() {
+        $(this).remove();
+        if (currentAlertIds[alertTypeKey] === alertId) {
+          currentAlertIds[alertTypeKey] = null;
+        }
+      });
+    } else if (isJobStatusAlert) {
+      currentAlertIds[alertTypeKey] = alertId;
+    }
+  }
+
+  function uuidv4() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+  }
+
+  $('th').click(function() {
+    var table = $(this).parents('table').eq(0);
+    var rows = table.find('tbody tr').toArray();
+    var column = $(this).index();
+    var asc = $(this).hasClass('asc');
+
+    rows.sort(function(a, b) {
+      var aVal = $(a).children('td').eq(column).text();
+      var bVal = $(b).children('td').eq(column).text();
+
+      // Check if the values are percentages
+      if (aVal.endsWith('%') && bVal.endsWith('%')) {
+        aVal = parseFloat(aVal.replace('%', ''));
+        bVal = parseFloat(bVal.replace('%', ''));
+      }
+
+      // Check if the values are dates
+      var dateFormat = /^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/\d{4} \d{1,2}:\d{2} (AM|PM)$/;
+      if (dateFormat.test(aVal) && dateFormat.test(bVal)) {
+        aVal = new Date(aVal);
+        bVal = new Date(bVal);
+        return asc ? aVal - bVal : bVal - aVal;
+      }
+
+      // Check if the values are numeric
+      if ($.isNumeric(aVal) && $.isNumeric(bVal)) {
+        return asc ? parseFloat(aVal) - parseFloat(bVal) : parseFloat(bVal) - parseFloat(aVal);
+      }
+
+      // Default string comparison
+      return asc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+    });
+
+    $.each(rows, function(index, row) {
+      table.children('tbody').append(row);
+    });
+
+    $('th').removeClass('asc desc');
+    $(this).addClass(asc ? 'desc' : 'asc');
+
+  });
+
+  <% if flash[:success] %>
+    alertMessage('<%= j flash[:success] %>','SUCCESS', 2500);
+  <% elsif flash[:danger] %>
+    alertMessage('<%= j flash[:danger] %>','DANGER', 4000);
+  <% elsif flash[:notice] %>
+    alertMessage('<%= j flash[:notice] %>','INFO',2500);
+  <% end %>
+
+</script>
