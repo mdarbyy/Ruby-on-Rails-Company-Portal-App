@@ -1,0 +1,5 @@
+<tr>
+  <td><%= link_to post.title, edit_post_path(post), class: "nav-link" %></td>
+  <td><%= post.body %></td>
+  <td><%= post.schedule.strftime("%Y-%m-%d %I:%M %p") %></td>
+</tr>

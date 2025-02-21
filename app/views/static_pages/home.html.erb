@@ -1,0 +1,70 @@
+<div class="row ms-3 me-3">
+  <div class="col-12">
+    <div class="row justify-content-center">
+      <div class="col">
+        <div class="scrollable-form mx-auto" id="scrolling_posts" style="width: 50%; max-height: 900px;">
+          <div id="posts"> 
+            <%= render partial: 'post_card', collection: @posts, as: :post %>
+          </div>
+          <div id="no-more-posts" style="display: none;">
+            <h6 style="text-align: center;">There are no more posts to show</h6>
+          </div>
+        </div>
+        <div id="loading-spinner" style="display: none; text-align: center;">
+          <div class="spinner-border text-danger" role="status">
+            <span class="sr-only"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    
+  var offset1 = <%= Setting.first.initial_posts_count %>;
+  var isLoading = false;
+    
+  $(document).ready(function() {
+    console.log("home.js.erb is loaded");
+    var cardCount = $('#posts .card').length
+    var totalCount = <%= @total_posts %>
+    console.log("Card Count: " + cardCount);
+    console.log("Total Count: " + totalCount);
+      
+    $('#scrolling_posts').on('scroll', function() {
+        
+      var scrollHeight = $(this)[0].scrollHeight; // Total height of the content
+      var scrollTop = $(this).scrollTop(); // Current scroll position
+      var containerHeight = $(this).innerHeight(); // Height of the container
+      
+      if (scrollTop + containerHeight >= scrollHeight - 10 && isLoading === false){
+        if (cardCount < <%= @total_posts %>) {
+          isLoading = true;
+          $('#loading-spinner').show();
+          $.ajax({
+          url: '<%= home_path %>', 
+          data: {
+            offset: offset1
+          },
+          dataType: 'script',
+          success: function() {
+            $('#loading-spinner').hide();
+            cardCount = $('#posts .card').length
+            console.log("Card Count: " + cardCount);
+            offset1 += <%= Setting.first.initial_posts_count %>
+            if ($('#posts .card').length >= <%= @total_posts %>) {
+              $('#no-more-posts').show();
+            }
+            isLoading = false;
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("AJAX Error:", textStatus, errorThrown);
+          }
+          });
+        }
+        }
+    });
+  });
+
+</script>

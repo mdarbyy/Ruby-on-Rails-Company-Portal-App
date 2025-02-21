@@ -13,7 +13,7 @@ class Users::SessionsController < Devise::SessionsController
     user = User.find_by(email: sign_in_params[:email])
 
     if user && user.valid_password?(sign_in_params[:password])
-      set_flash_message(:success, :signed_in)
+      flash[:success] = "Signed in successfully!"
       sign_in_and_redirect user, event: :authentication
     else
       flash[:danger] = "Invalid email or password"

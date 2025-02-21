@@ -1,0 +1,25 @@
+<div class="card mb-4 custom-card">
+  <div class="card-body">
+    <div class="d-flex align-items-center mb-3">
+      <div style="width: 100%;">
+        <h4 class="card-title mb-3 scrollable-content"><%= post.title %></h4>
+        
+        <% if post.schedule.present? %>
+          <h5 class="text-muted posted-on mb-3">Posted on <%= post.schedule.strftime("%B %d, %Y at %I:%M %p") %></h5>
+        <% end %>
+        
+        <p class="card-text mb-3 scrollable-content"><%= post.body %></p>
+
+        <div class="d-flex flex-row flex-nowrap mt-3 scrollable-container-x">
+          <%# if post.files.attached? %>
+            <%# post.files.each do |file| %>
+              <div id="file-<%# file.id %>" class="d-flex align-items-center" style="margin-right: 20px;">
+                <%# render 'shared/media', post: post, file: file %>
+              </div>
+            <%# end %>
+          <%# end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

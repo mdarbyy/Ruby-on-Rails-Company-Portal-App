@@ -1,10 +1,33 @@
 <%= form_with(model: setting, local: true) do |form| %>
+  
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+      <label class="col-form-label"><strong>Number of Posts to show and pull at a time</strong></label>
+      <%= form.number_field :initial_posts_count, class: 'form-control', placeholder: setting.initial_posts_count %>
+    </div>
+  </div>
+  
   <div class="row g-3 mb-3 align-items-center">
     <div class="col-12">
       <label class="col-form-label"><strong>Number of records returned from a ajax call</strong></label>
       <%= form.number_field :entity_limit, class: 'form-control', placeholder: setting.entity_limit %>
     </div>
   </div>
+
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+      <label class="col-form-label"><strong>Post title length</strong></label>
+      <%= form.number_field :max_post_title_length, class: 'form-control', placeholder: setting.max_post_title_length %>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+      <label class="col-form-label"><strong>Show Posts from X days ago</strong></label>
+      <%= form.number_field :post_within_days, class: 'form-control', placeholder: setting.post_within_days %>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-12 d-flex justify-content-end">
       <%= form.submit 'Submit', class: 'btn btn-main', onclick:"show_spinner()" %>

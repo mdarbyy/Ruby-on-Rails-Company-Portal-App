@@ -1,0 +1,81 @@
+<%= form_with(model: post, multipart: true) do |form| %>
+  
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+      <label class="col-form-label"><strong>Title</strong></label>
+      <%= form.text_area :title, class: 'form-control custom-textarea-small post-name', value: post.title, maxlength: Setting.first.max_post_title_length %>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+      <label class="col-form-label"><strong>Body</strong></label>
+      <%= form.text_area :body, class: 'form-control custom-textarea post-notes', value: post.body %>
+    </div>
+  </div>
+
+  <%# render 'shared/file_attachments', form: form, post: post %>
+
+  <% unless post.created_at.present? %>
+  
+    <div class="row g-3 mb-5 align-items-center">
+      <div class="col-12">
+        <label class="col-form-label" style="margin-right: 10px;"><strong>Post Now</strong></label>
+        <label class="custom-checkbox">
+          <input type="checkbox" id="post_now_checkbox" class="form-check-input" checked>
+          <span class="checkmark"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-5 align-items-center" id="schedule_row">
+      <div class="col-12">
+        <label class="col-form-label"><strong>Schedule</strong></label>
+        <div style="margin-bottom: 5px;">
+          <span class="text-muted">If you do not set a schedule it will be set to the current time</span>
+        </div>
+        <%= form.datetime_field :schedule, class: 'form-control' %>
+      </div>
+    </div>
+  <% end %>
+  
+  <div class="row g-3 mb-5 align-items-center">
+    <div class="col-md-4 d-flex justify-content-center">
+    </div>
+    <div class="col-md-4 d-flex justify-content-center">
+      <label class="col-form-label" style="margin-right: 10px;"><strong>Important Post</strong></label>
+      <label class="custom-checkbox">
+        <%= form.check_box :isImportant %>
+        <span class="checkmark"></span>
+      </label>
+    </div>
+    <div class="col-md-4 d-flex justify-content-center">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 d-flex justify-content-end">
+      <%= form.submit 'Submit', class: 'btn btn-main', onclick:"show_spinner()" %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const checkbox = document.getElementById("post_now_checkbox");
+    const scheduleRow = document.getElementById("schedule_row");
+
+    function toggleScheduleRow() {
+      if (checkbox.checked) {
+        scheduleRow.style.display = "none";
+      } else {
+        scheduleRow.style.display = "";
+      }
+    }
+
+    checkbox.addEventListener("change", toggleScheduleRow);
+
+    // Initial check when the page loads
+    toggleScheduleRow();
+  });
+</script>

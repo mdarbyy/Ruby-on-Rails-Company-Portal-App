@@ -10,14 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_02_13_170635) do
+ActiveRecord::Schema[7.0].define(version: 2025_02_21_200808) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "posts", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.datetime "schedule"
+    t.boolean "isImportant", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "settings", force: :cascade do |t|
     t.integer "entity_limit", default: 5
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "max_post_title_length", default: 100
+    t.integer "post_within_days", default: 5
+    t.integer "initial_posts_count", default: 5
   end
 
   create_table "users", force: :cascade do |t|

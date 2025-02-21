@@ -1,0 +1,16 @@
+<div class="media-content">
+  <% if file.content_type.start_with?('image/') %>
+    <%= link_to image_tag(file, class: 'image-media'), url_for(file), data: { lightbox: "post-#{post.class.name}-#{post.id}-images" } %>
+  <% elsif file.content_type.start_with?('video/') %>
+    <%= video_tag(url_for(file), controls: true, size: '320x240') %>
+  <% elsif file.content_type.start_with?('audio/') %>
+    <%= audio_tag(url_for(file), controls: true) %>
+  <% elsif file.content_type == 'application/pdf' %>
+    <%= link_to rails_blob_path(file, disposition: :inline), target: "_blank" do %>
+      <%# image_tag('pdf_icon.png', alt: 'PDF') %>
+      <%= file.filename.to_s %>
+    <% end %>
+  <% else %>
+    <%= link_to file.filename.to_s, rails_blob_path(file, disposition: 'attachment') %>
+  <% end %>
+</div>
