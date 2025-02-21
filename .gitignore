@@ -33,3 +33,4 @@
 #Ignore YML files
 /yml/*
 *.yml
+config/application.yml
