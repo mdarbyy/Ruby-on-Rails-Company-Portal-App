@@ -8,16 +8,22 @@
           <h5 class="text-muted posted-on mb-3">Posted on <%= post.schedule.strftime("%B %d, %Y at %I:%M %p") %></h5>
         <% end %>
         
-        <p class="card-text mb-3 scrollable-content"><%= post.body %></p>
+        <p class="card-text mb-3 scrollable-content">
+          <% if post.body.length > 300 %>
+            <p><%= post.body.truncate(300) %><%= link_to 'Read More', post_path(post), class:"nav-link", style:"display: inline;" %></p>
+          <% else %>
+            <p><%= post.body %></p>
+          <% end %>
+        </p>
 
         <div class="d-flex flex-row flex-nowrap mt-3 scrollable-container-x">
-          <%# if post.files.attached? %>
-            <%# post.files.each do |file| %>
-              <div id="file-<%# file.id %>" class="d-flex align-items-center" style="margin-right: 20px;">
-                <%# render 'shared/media', post: post, file: file %>
+          <% if post.files.attached? %>
+            <% post.files.each do |file| %>
+              <div id="file-<%= file.id %>" class="d-flex align-items-center" style="margin-right: 20px;">
+                <%= render 'shared/media', post: post, file: file %>
               </div>
-            <%# end %>
-          <%# end %>
+            <% end %>
+          <% end %>
         </div>
       </div>
     </div>

@@ -1,5 +1,17 @@
 <tr>
-  <td><%= link_to post.title, edit_post_path(post), class: "nav-link" %></td>
-  <td><%= post.body %></td>
+  <td>
+    <% if post.title.length > 50 %>
+      <%= link_to truncate(post.title, length: 50), edit_post_path(post), class: "nav-link" %>
+    <% else %>  
+      <%= link_to post.title, edit_post_path(post), class: "nav-link" %>
+    <% end %>
+  </td>
+  <td>
+    <% if post.body.length > 50 %>
+      <%= truncate(post.body, length: 50) %>
+    <% else %>
+      <%= post.body %>
+    <% end %>
+  </td>
   <td><%= post.schedule.strftime("%Y-%m-%d %I:%M %p") %></td>
 </tr>

@@ -1,0 +1,68 @@
+<div>
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+      <div class="row">
+        <label class="col-form-label"><strong>Attachment(s)</strong></label>
+      </div>
+      <div class="row">
+        <%= form.file_field :files, multiple: true, direct_upload: true %>
+      </div>
+    </div>
+  </div>
+
+  <div id="existingAttachments" class="row g-3 mb-3 align-items-center" style="<%= post.files.attached? ? '' : 'display: none;' %>">
+    <div class="col-12">
+      <div class="row">
+        <label class="col-form-label"><strong>Existing Attachment(s)</strong></label>
+      </div>
+      <div class="d-flex flex-row flex-nowrap scrollable-container-x">
+        <% if post.files.attached? %>
+          <% post.files.each do |file| %>
+            <div id="file-<%= file.id %>" class="d-flex align-items-center" style="margin-right: 20px;">
+              <%= render 'shared/media', post: post, file: file %>
+              <button onclick="removeAttachment(<%= post.id %>, <%= file.id %>, '<%= remove_attachment_path(post, file) %>')" type="button" class="btn btn-main">X</button>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function removeAttachment(postId, fileId, path) {
+  
+  if (!confirm('Are you sure you want to remove this attachment?')) return;
+
+  const url = `${path}?file_id=${fileId}`;
+  
+  fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      'Content-Type': 'application/json',
+      'Accept': 'text/javascript'
+    },
+    credentials: 'include'
+  })
+  .then(response => {
+    if (response.ok) {
+      document.getElementById(`file-${fileId}`).remove();
+
+      // Check if there are any remaining divs with ids starting with "file-"
+      const remainingFiles = document.querySelectorAll('[id^="file-"]');
+      
+      // If no remaining file divs, hide the "existingAttachments" div
+      if (remainingFiles.length === 0) {
+        document.getElementById('existingAttachments').style.display = 'none';
+      }
+
+    } else {
+      alertMessage('Failed to delete the attachment.',danger,2500,false);
+    }
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+</script>

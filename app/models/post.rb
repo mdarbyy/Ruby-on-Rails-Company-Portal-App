@@ -2,7 +2,7 @@ class Post < ApplicationRecord
   validates :title, presence: true
   validates :body, presence: true
 
-  #has_many_attached :files
+  has_many_attached :files
 
   before_create :set_schedule
   before_update :set_schedule

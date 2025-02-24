@@ -1,10 +1,30 @@
-<p style="color: green"><%= notice %></p>
+<div class="flex-fill d-flex flex-column m-1">
+  <div id="content-header">
+    <div class="row">
+      <div class="col-4">
+        <%= link_to 'Cancel', home_path, class: 'btn btn-main btn-left' %>
+      </div>
+      <div class="col-4 d-flex justify-content-center">
+        <h1>
+          <% if @post.title.length > 30 %>
+            <%= truncate(@post.title, length: 30) %>
+          <% else %>
+            <%= @post.title %>
+          <% end %>
+        </h1>
+      </div>
+      <div class="col-4 d-flex justify-content-end">
+      </div>
+    </div>
+  </div>
 
-<%= render @post %>
-
-<div>
-  <%= link_to "Edit this post", edit_post_path(@post) %> |
-  <%= link_to "Back to posts", posts_path %>
-
-  <%= button_to "Destroy this post", @post, method: :delete %>
+  <div class="card m-1" id="content-main">
+    <div class="card-body scrollable-form">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+          <%= render 'show_content' %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

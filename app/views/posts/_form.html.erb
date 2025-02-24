@@ -10,11 +10,11 @@
   <div class="row g-3 mb-3 align-items-center">
     <div class="col-12">
       <label class="col-form-label"><strong>Body</strong></label>
-      <%= form.text_area :body, class: 'form-control custom-textarea post-notes', value: post.body %>
+      <%= form.text_area :body, class: 'form-control custom-textarea scrollable-form', value: post.body %>
     </div>
   </div>
 
-  <%# render 'shared/file_attachments', form: form, post: post %>
+  <%= render 'shared/file_attachments', form: form, post: post %>
 
   <% unless post.created_at.present? %>
   

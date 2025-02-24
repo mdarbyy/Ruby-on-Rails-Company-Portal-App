@@ -46,8 +46,20 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1 or /posts/1.json
   def update
+    existing_files = @post.files
+    
     respond_to do |format|
-      if @post.update(post_params)
+      if @post.update(post_params.except(:files))
+
+        existing_files.each do |file|
+          @post.files.attach(file.blob)
+        end
+
+        # If there are new files in the params, attach them as well
+        if params[:post][:files].present?
+          @post.files.attach(params[:post][:files])
+        end
+
         format.html { redirect_to posts_path, success: "Post was updated" }
         format.json { render :show, status: :ok, location: @post }
       else
@@ -68,6 +80,15 @@ class PostsController < ApplicationController
     end
   end
 
+  def remove_attachment
+    @post = Post.find(params[:id])
+    attachment = @post.files.find(params[:file_id])
+    attachment.purge
+    respond_to do |format|
+      format.js { render layout: false }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_post
@@ -76,6 +97,6 @@ class PostsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def post_params
-      params.require(:post).permit(:title, :body, :schedule, :isImportant)
+      params.require(:post).permit(:title, :body, :schedule, :isImportant, files: [])
     end
 end

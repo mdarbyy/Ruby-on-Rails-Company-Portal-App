@@ -1,0 +1,18 @@
+<%= form_with(model: @post, multipart: true) do |form| %>
+  
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+      <%= form.text_area :body, class: 'form-control custom-textarea-show scrollable-form', value: @post.body, readonly: true %>
+    </div>
+  </div>
+
+  <div class="d-flex flex-row flex-nowrap mt-3 scrollable-container-x">
+    <% if @post.files.attached? %>
+      <% @post.files.each do |file| %>
+        <div id="file-<%= file.id %>" class="d-flex align-items-center" style="margin-right: 20px;">
+          <%= render 'shared/media', post: @post, file: file %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
