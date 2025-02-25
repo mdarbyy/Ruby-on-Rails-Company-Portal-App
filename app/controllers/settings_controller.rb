@@ -65,6 +65,6 @@ class SettingsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def setting_params
-      params.require(:setting).permit(:entity_limit, :max_post_title_length, :post_within_days, :initial_posts_count)
+      params.require(:setting).permit(:entity_limit, :max_post_title_length, :post_within_days, :initial_posts_count, :max_post_body_length)
     end
 end

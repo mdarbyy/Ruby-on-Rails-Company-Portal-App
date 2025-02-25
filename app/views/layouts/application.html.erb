@@ -405,7 +405,7 @@
             <div class="col">
               <ul class="list-group list-group-flush mt-4">
                 <li class="list-group-item">
-                  <%= link_to "Home", home_path, class: "dashboard-link sidebar-nav-link #{'active' if current_page?(home_path)}" %>
+                  <%= link_to "Home", home_path, class: "dashboard-link sidebar-nav-link #{'active' if current_page?(home_path) or current_page?(root_path)}" %>
                 </li>
                 <li class="list-group-item">
                   <%= link_to "Posts", posts_path, class: "dashboard-link sidebar-nav-link #{'active' if current_page?(posts_path)}" %>

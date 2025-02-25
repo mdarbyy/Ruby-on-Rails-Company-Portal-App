@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_02_21_210715) do
+ActiveRecord::Schema[7.0].define(version: 2025_02_25_150002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -58,6 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_21_210715) do
     t.integer "max_post_title_length", default: 100
     t.integer "post_within_days", default: 5
     t.integer "initial_posts_count", default: 5
+    t.integer "max_post_body_length", default: 500
   end
 
   create_table "users", force: :cascade do |t|

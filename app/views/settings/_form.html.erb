@@ -23,6 +23,13 @@
 
   <div class="row g-3 mb-3 align-items-center">
     <div class="col-12">
+      <label class="col-form-label"><strong>Post body length</strong></label>
+      <%= form.number_field :max_post_body_length, class: 'form-control', placeholder: setting.max_post_body_length %>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
       <label class="col-form-label"><strong>Show Posts from X days ago</strong></label>
       <%= form.number_field :post_within_days, class: 'form-control', placeholder: setting.post_within_days %>
     </div>

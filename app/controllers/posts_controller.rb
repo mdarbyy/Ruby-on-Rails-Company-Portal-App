@@ -5,7 +5,7 @@ class PostsController < ApplicationController
   def index
     @limit = Setting.first.entity_limit
     offset = params[:offset].to_i || 0
-    @posts = Post.all.limit(@limit).offset(offset).order(schedule: :desc)
+    @posts = Post.all.limit(@limit).offset(offset).order(updated_at: :desc, schedule: :desc)
     @total_records = Post.all.count
 
     respond_to do |format|
