@@ -1,0 +1,126 @@
+<%= form_with model: @form, local: true do |f| %>
+  
+  <!-- Basic Form Information -->
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+      <label class="col-form-label"><strong>Form Name</strong></label>
+      <%= f.text_field :name, class: 'form-control', value: @form.name %>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+      <label class="col-form-label"><strong>Description</strong></label>
+      <%= f.text_area :description, class: 'form-control custom-textarea-small', value: @form.description %>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+      <label class="col-form-label"><strong>Status</strong></label>
+      <%= f.select :status, options_for_select([['Active', 'active'], ['Inactive', 'inactive']], @form.status), {}, { class: "form-control" } %>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+      <label class="col-form-label"><strong>Required By</strong></label>
+      <%= f.datetime_field :required_by, class: 'form-control' %>
+    </div>
+  </div>
+  
+  <div id="form-fields">
+    <%= f.fields_for :form_fields do |field_form| %>
+      <div class="form-field-wrapper">
+        <!-- Hidden field for the ID of the existing field -->
+        <%= field_form.hidden_field :id %>
+
+        <!-- Hidden field for _destroy to mark for deletion -->
+        <%= field_form.hidden_field :_destroy %>
+
+        <hr class="form-field-separator" />
+        <div class="row g-3 mb-3 align-items-center form-field">
+          <div class="col-11">
+            <label class="col-form-label"><strong>Field Label</strong></label>
+            <%= field_form.text_field :label, class: 'form-control' %>
+
+            <label class="col-form-label"><strong>Subtext</strong></label>
+            <%= field_form.text_area :description, class: 'form-control custom-textarea-small', placeholder:"Enter Subtext (Optional)" %>
+
+            <label class="col-form-label"><strong>Field Type</strong></label>
+            <%= field_form.select :field_type, options_for_select([['Text', 'text'], ['Yes/No', 'boolean']], field_form.object.field_type), {}, { class: 'form-control' } %>
+          </div>
+          <div class="col-1 d-flex align-items-end">
+            <a href="#" class="btn btn-main remove-field">X</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="row g-3 mb-3 align-items-center">
+    <div class="col-12 d-flex justify-content-center">
+      <button type="button" id="add-field-btn" class="btn btn-main">Add Field</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 d-flex justify-content-end">
+      <%= f.submit 'Submit', class: 'btn btn-main', onclick:"show_spinner()" %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    const formFieldsContainer = document.getElementById('form-fields'); 
+    const addFieldBtn = document.getElementById('add-field-btn');
+
+    // Event listener for "Add Field" button
+    addFieldBtn.addEventListener('click', function () {
+      const timestamp = new Date().getTime();  // Use timestamp as unique identifier for new fields
+      const newFieldHTML = `
+      <div class="form-field-wrapper">
+        <hr class="form-field-separator" />
+        <div class="row g-3 mb-3 align-items-center form-field">
+          <div class="col-11">
+            <label class="col-form-label"><strong>Field Label</strong></label>
+            <input type="text" name="form[form_fields_attributes][${timestamp}][label]" class="form-control" placeholder="Enter Field Label" />
+
+            <label class="col-form-label"><strong>Subtext</strong></label>
+            <textarea name="form[form_fields_attributes][${timestamp}][description]" class="form-control custom-textarea-small" placeholder="Enter Subtext (Optional)"></textarea>
+
+            <label class="col-form-label"><strong>Field Type</strong></label>
+            <select name="form[form_fields_attributes][${timestamp}][field_type]" class="form-control">
+              <option value="text">Text</option>
+              <option value="boolean">Yes/No</option>
+            </select>
+          </div>
+          <div class="col-1 d-flex align-items-end">
+            <a href="#" class="btn btn-main remove-field">X</a>
+          </div>
+        </div>
+      </div>`;
+
+      formFieldsContainer.insertAdjacentHTML('beforeend', newFieldHTML);
+    });
+
+    // Event listener to remove fields
+    formFieldsContainer.addEventListener('click', function (e) {
+      if (e.target.classList.contains('remove-field')) {
+        e.preventDefault();
+        const fieldWrapper = e.target.closest('.form-field-wrapper');
+
+        // If the field exists in the database (it has an ID), mark it for destruction
+        const destroyField = fieldWrapper.querySelector('input[name*="_destroy"]');
+        if (destroyField) {
+          destroyField.value = '1'; // Mark field for destruction
+          fieldWrapper.style.display = 'none'; // Hide the entire wrapper
+        } else {
+          // Otherwise, remove the HTML element for new fields
+          fieldWrapper.remove();
+        }
+      }
+    });
+  });
+</script>

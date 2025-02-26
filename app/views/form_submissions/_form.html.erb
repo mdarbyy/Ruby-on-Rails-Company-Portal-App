@@ -1,0 +1,33 @@
+<%= form_with model: @form_submission, url: form_form_submissions_path(@form), method: :post do |f| %>
+  
+  <!-- Include hidden field to pass the form_id -->
+  <%= f.hidden_field :form_id, value: @form.id %>
+  
+  <div id="form-fields">
+    <% @form.form_fields.each do |field| %>
+      <div class="row g-3 mb-3 align-items-center">
+        <div class="col-12">
+          <label class="col-form-label"><strong><%= field.label %></strong></label>
+
+          <% if field.description.present? %>
+            <div class="col-12">
+              <small class="form-text text-muted"><%= field.description %></small>
+            </div>
+          <% end %>
+
+          <% if field.field_type == 'text' %>
+            <%= f.text_field "answers[#{field.id}]", name: "form_submission[answers][#{field.id}]", class: 'form-control' %>
+          <% elsif field.field_type == 'boolean' %>
+            <%= f.select "answers[#{field.id}]", options_for_select([['Yes', 'Yes'], ['No', 'No']]), {}, { name: "form_submission[answers][#{field.id}]", class: 'form-control' } %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="row">
+    <div class="col-12 d-flex justify-content-end">
+      <%= f.submit 'Submit', class: 'btn btn-main', onclick: "show_spinner()" %>
+    </div>
+  </div>
+<% end %>

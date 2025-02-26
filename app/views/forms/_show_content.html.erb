@@ -1,0 +1,47 @@
+<div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+        <label class="col-form-label"><strong>Form Name</strong></label>
+        <input type="text" value="<%= @form.name %>" class="form-control" disabled>
+    </div>
+</div>
+
+<div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+        <label class="col-form-label"><strong>Description</strong></label>
+        <textarea class="form-control custom-textarea-small" disabled><%= @form.description %></textarea>
+    </div>
+</div>
+
+<div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+        <label class="col-form-label"><strong>Status</strong></label>
+        <input type="text" value="<%= @form.status.capitalize %>" class="form-control" disabled>
+    </div>
+</div>
+
+<div class="row g-3 mb-3 align-items-center">
+    <div class="col-12">
+        <label class="col-form-label"><strong>Required By</strong></label>
+        <input type="text" value="<%= @form.required_by.strftime('%Y-%m-%d %H:%M') if @form.required_by %>" class="form-control" disabled>
+    </div>
+</div>
+
+<div id="form-fields">
+<% @form.form_fields.each do |field| %>
+    <hr class="form-field-separator" />
+    <div class="row g-3 mb-3 align-items-center form-field">
+    <div class="col-12">
+        <label class="col-form-label"><strong>Field Label</strong></label>
+        <input type="text" value="<%= field.label %>" class="form-control" disabled>
+
+        <% if field.description.present? %>
+            <label class="col-form-label"><strong>Subtext</strong></label>
+            <textarea class="form-control custom-textarea-small" disabled><%= field.description %></textarea>
+        <% end %>
+
+        <label class="col-form-label"><strong>Field Type</strong></label>
+        <input type="text" value="<%= field.field_type == 'text' ? 'Text' : 'Yes/No' %>" class="form-control" disabled>
+    </div>
+    </div>
+<% end %>
+</div>

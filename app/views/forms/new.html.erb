@@ -1,0 +1,24 @@
+<div class="flex-fill d-flex flex-column m-1">
+  <div id="content-header">
+    <div class="row">
+      <div class="col-4">
+        <%= link_to 'Cancel', forms_url, class: 'btn btn-main btn-left' %>
+      </div>
+      <div class="col-4 d-flex justify-content-center">
+        <h1>New Form</h1>
+      </div>
+      <div class="col-4 d-flex justify-content-end">
+      </div>
+    </div>
+  </div>
+
+  <div class="card m-1" id="content-main">
+    <div class="card-body scrollable-form">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+          <%= render "form", form: @form %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

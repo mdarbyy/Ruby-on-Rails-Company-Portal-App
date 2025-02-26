@@ -12,7 +12,6 @@ class PostsController < ApplicationController
       format.html
       format.js
     end
-
   end
 
   # GET /posts/1 or /posts/1.json

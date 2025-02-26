@@ -1,0 +1,18 @@
+<tr>
+  <td>
+    <% if form.name.length > 50 %>
+      <%= link_to truncate(form.name, length: 50), edit_form_path(form), class: "nav-link" %>
+    <% else %>  
+      <%= link_to form.name, edit_form_path(form), class: "nav-link" %>
+    <% end %>
+  </td>
+  <td>
+    <% if form.description.length > 50 %>
+      <%= truncate(form.description, length: 50) %>
+    <% else %>
+      <%= form.description %>
+    <% end %>
+  </td>
+  <td><%= form.status %></td>
+  <td><%= form.required_by.strftime("%Y-%m-%d %I:%M %p") %></td>
+</tr>

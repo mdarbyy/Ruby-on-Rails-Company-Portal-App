@@ -21,4 +21,15 @@ class StaticPagesController < ApplicationController
     end
 
   end
+
+  def employee_information
+    user_submitted_form_ids = FormSubmission.where(user: current_user).pluck(:form_id)
+
+    # Forms with submissions by the user
+    @forms_with_submission = Form.where(id: user_submitted_form_ids, status: 'active')
+    
+    # Forms without submissions by the user
+    @forms_without_submission = Form.where.not(id: user_submitted_form_ids).where(status: 'active')
+
+  end
 end

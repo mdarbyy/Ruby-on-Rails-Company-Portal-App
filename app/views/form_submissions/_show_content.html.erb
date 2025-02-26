@@ -1,0 +1,26 @@
+<div id="form-fields">
+  <% answers = JSON.parse(@form_submission.answers) %>
+  <% @form_submission.form.form_fields.each do |field| %>
+    <div class="row g-3 mb-3 align-items-center form-field">
+      <div class="col-12">
+        <label class="col-form-label"><strong><%= field.label %></strong></label>
+        <input type="text" value="<%= answers["#{field.id}"] %>" class="form-control" disabled>
+      </div>
+    </div>
+    <hr class="form-field-separator" />
+  <% end %>
+</div>
+
+<div class="row g-3 mb-3 align-items-center">
+  <div class="col-12">
+    <label class="col-form-label"><strong>Completed On</strong></label>
+    <input type="text" value="<%= @form_submission.completed_on.strftime("%m/%d/%Y %I:%M%p") if @form_submission.completed_on %>" class="form-control" disabled>
+  </div>
+</div>
+
+<div class="row g-3 mb-3 align-items-center">
+  <div class="col-12">
+    <label class="col-form-label"><strong>Completed By</strong></label>
+    <input type="text" value="<%= @form_submission.user.first_name + ' ' + @form_submission.user.last_name %>" class="form-control" disabled>
+  </div>
+</div>

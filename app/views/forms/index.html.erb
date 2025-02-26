@@ -3,10 +3,10 @@
   <div id="content-header">
     <div class="row">
       <div class="col-4 d-flex justify-content-start">
-        <%= button_to 'Create Post', new_post_path, method: :get, class: 'btn btn-main btn-left' %>
+        <%= button_to 'Create Form', new_form_path, method: :get, class: 'btn btn-main btn-left' %>
       </div>
       <div class="col-4 d-flex justify-content-center">
-        <h1>Post</h1>
+        <h1>Forms</h1>
       </div>
       <div class="col-4 d-flex justify-content-end">
         <form role="search" class="d-flex search-form">
@@ -20,19 +20,20 @@
   <div class="card m-1 p-2" id="content-main">
     <div class="h-100 table-responsive" id="content-scroll">
 
-      <% if @posts.present? and @posts.count > 0 %>
+      <% if @forms.present? and @forms.count > 0 %>
         <table class="table content" id="content-table">
           <thead>
             <tr>
-              <th class="stick" scope="col"><a>Title</a></th>
-              <th class="stick" scope="col"><a>Body</a></th>
-              <th class="stick" scope="col"><a>Schedule</a></th>
+              <th class="stick" scope="col"><a>Name</a></th>
+              <th class="stick" scope="col"><a>Description</a></th>
+              <th class="stick" scope="col"><a>Status</a></th>
+              <th class="stick" scope="col"><a>Required By</a></th>
             </tr>
           </thead>
           <tbody id="content-table-body">
 
-            <% @posts.each do |post| %>
-              <%= render 'post', post: post %>
+            <% @forms.each do |form| %>
+              <%= render 'form_rows', form: form %>
             <% end %>
 
           </tbody>
@@ -41,9 +42,10 @@
         <table class="table content">
           <thead>
             <tr>
-              <th class="stick" scope="col"><a>Title</a></th>
-              <th class="stick" scope="col"><a>Body</a></th>
-              <th class="stick" scope="col"><a>Schedule</a></th>
+              <th class="stick" scope="col"><a>Name</a></th>
+              <th class="stick" scope="col"><a>Description</a></th>
+              <th class="stick" scope="col"><a>Status</a></th>
+              <th class="stick" scope="col"><a>Required By</a></th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -58,7 +60,7 @@
     </div>
 
     <div style="text-align: center;" id="recordCount">
-      <b>Displaying <span id="currentCount">0</span> of <%= @total_records %> posts</b>
+      <b>Displaying <span id="currentCount">0</span> of <%= @total_records %> forms</b>
     </div>
   </div>
 
@@ -99,10 +101,10 @@
 
     if (isLoading) return;
 
-    console.log("Loading more posts.");
+    console.log("Loading more forms.");
     
     $.ajax({
-      url: "posts",
+      url: "forms",
       data: { offset: offset1 },
       type: 'GET',
       dataType: 'script',
@@ -113,7 +115,7 @@
       },
       success: function(data) {
         offset1 += <%= Setting.first.entity_limit %>;
-        console.log("Loaded more posts.");
+        console.log("Loaded more forms.");
         var rowCount = $('#content-table tbody tr').length;
         $('#currentCount').text(rowCount);
       },

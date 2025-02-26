@@ -5,4 +5,5 @@ class User < ApplicationRecord
   :recoverable, :rememberable, :validatable
 
   validates :email, uniqueness: true
+  has_many :form_submissions, dependent: :destroy
 end

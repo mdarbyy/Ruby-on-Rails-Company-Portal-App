@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Form fields</h1>
+
+<div id="form_fields">
+  <% @form_fields.each do |form_field| %>
+    <%= render form_field %>
+    <p>
+      <%= link_to "Show this form field", form_field %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New form field", new_form_field_path %>
