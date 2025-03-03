@@ -8,7 +8,7 @@
         <h1>Edit User</h1>
       </div>
       <div class="col-4 d-flex justify-content-end">
-        <%= button_to 'Delete', user_url(@user), method: :delete, class: 'btn btn-main btn-right', hidden: current_user.id == @user.id %>
+        <%= button_to 'Delete', user_url(@user), method: :delete, class: 'btn btn-main btn-right', hidden: current_user.id == @user.id or !current_user.isAdmin %>
       </div>
     </div>
   </div>

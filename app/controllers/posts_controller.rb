@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_action :check_if_user_is_admin, except: %i[show]
   before_action :set_post, only: %i[ show edit update destroy ]
 
   # GET /posts or /posts.json
@@ -92,6 +93,12 @@ class PostsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
+    end
+
+    def check_if_user_is_admin
+      unless current_user.isAdmin?
+        redirect_to root_path, danger: "You are not authorized to view this page"
+      end
     end
 
     # Only allow a list of trusted parameters through.

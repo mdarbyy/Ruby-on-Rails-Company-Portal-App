@@ -27,6 +27,22 @@
     </div>
   </div>
 
+  <% if current_user.isAdmin? %>
+    <div class="row g-3 mb-3 align-items-center">
+      <div class="col-md-4 d-flex justify-content-center">
+      </div>
+      <div class="col-md-4 d-flex justify-content-center">
+        <label class="col-form-label" style="margin-right: 10px;"><strong>Admin</strong></label>
+        <label class="custom-checkbox">
+          <%= form.check_box :isAdmin %>
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div class="col-md-4 d-flex justify-content-center">
+      </div>
+    </div>
+  <% end %>
+
   <div class="row">
     <div class="col-12 d-flex justify-content-end">
       <%= form.submit 'Submit', class: 'btn btn-main', onclick:"show_spinner()" %>

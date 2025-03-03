@@ -1,4 +1,5 @@
 class SettingsController < ApplicationController
+  before_action :check_if_user_is_admin
   before_action :set_setting, only: %i[ show edit update destroy ]
 
   # GET /settings or /settings.json
@@ -61,6 +62,12 @@ class SettingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_setting
       @setting = Setting.find(params[:id])
+    end
+
+    def check_if_user_is_admin
+      unless current_user.isAdmin?
+        redirect_to root_path, danger: "You are not authorized to view this page"
+      end
     end
 
     # Only allow a list of trusted parameters through.

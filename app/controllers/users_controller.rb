@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_if_user_is_admin, only: [:index, :new, :create, :destroy]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -32,6 +33,9 @@ class UsersController < ApplicationController
   end
 
   def edit
+    unless current_user.isAdmin? or current_user.id == @user.id
+      redirect_to root_path, danger: "You are not authorized to view this page"
+    end
   end
 
   def update
@@ -62,7 +66,13 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def check_if_user_is_admin
+    unless current_user.isAdmin?
+      redirect_to root_path, danger: "You are not authorized to view this page"
+    end
+  end
+
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :first_name, :last_name) 
+    params.require(:user).permit(:email, :password, :password_confirmation, :first_name, :last_name, :isAdmin) 
   end
 end
