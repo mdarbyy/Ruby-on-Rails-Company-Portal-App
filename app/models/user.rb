@@ -6,4 +6,20 @@ class User < ApplicationRecord
 
   validates :email, uniqueness: true
   has_many :form_submissions, dependent: :destroy
+
+  after_create :check_for_admin
+  after_update :check_for_admin
+  after_destroy :check_for_admin
+
+  def check_for_admin
+    admins = User.where(isAdmin: true)
+    if admins.count == 0
+      user = User.first
+      if user.present?
+        user.isAdmin = true
+        user.save
+      end
+    end
+  end
+
 end

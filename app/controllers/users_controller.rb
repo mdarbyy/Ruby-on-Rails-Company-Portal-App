@@ -45,7 +45,7 @@ class UsersController < ApplicationController
     if @user.update(user_parameters)
       
       if current_user.id == @user.id
-        sign_in :user, @user, bypass: true
+        bypass_sign_in(current_user)
       end
       
       redirect_to users_path, success: 'User was updated'
